@@ -32,19 +32,18 @@ public class EmployeeDao {
 
         return employees;
     }
-    public boolean employeeExists(String employeeCode, String employeeName) {
+    public Employee findEmployee(String employeeCode, String employeeName) {
         String query = null;
         String value = null;
 
-        // Ưu tiên tìm theo tên nếu có, nếu không thì theo mã
         if (employeeName != null && !employeeName.trim().isEmpty()) {
-            query = "SELECT COUNT(*) FROM employee WHERE employee_name = ?";
+            query = "SELECT * FROM employee WHERE employee_name = ?";
             value = employeeName.trim();
         } else if (employeeCode != null && !employeeCode.trim().isEmpty()) {
-            query = "SELECT COUNT(*) FROM employee WHERE employee_code = ?";
+            query = "SELECT * FROM employee WHERE employee_code = ?";
             value = employeeCode.trim();
         } else {
-            return false; // Không có điều kiện tìm kiếm nào hợp lệ
+            return null; // Không có điều kiện tìm kiếm hợp lệ
         }
 
         try (
@@ -54,14 +53,20 @@ public class EmployeeDao {
             stmt.setString(1, value);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    // Tạo và trả về đối tượng Employee
+                    Employee emp = new Employee();
+                    emp.setEmployeeCode(rs.getString("employee_code"));
+                    emp.setEmployeeName(rs.getString("employee_name"));
+                    emp.setEmployeeAge(rs.getInt("employee_age"));
+                    emp.setDateOfBirth(rs.getDate("date_of_birth")); 
+                    return emp;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Ghi log, có thể thay bằng logger thực tế
+            e.printStackTrace(); // Có thể thay bằng logger
         }
 
-        return false;
+        return null; // Không tìm thấy
     }
 
     public boolean delete(String employeeCode) {
@@ -117,6 +122,7 @@ public class EmployeeDao {
 
         return false; // false nếu có lỗi
     }
+
 
 
     }

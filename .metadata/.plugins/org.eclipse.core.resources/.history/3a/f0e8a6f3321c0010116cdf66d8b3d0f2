@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Update employee</title>
+  
+</head>
+
+<body>
+  <h:form>
+    <h3>Update employee</h3>
+    
+    <h:inputText id="employeeCode"
+                 value="#{employeeBean.selectedEmployee.employeeCode}" style="display: none;" />
+    <br/>
+    
+     <h:outputLabel for="employeeName" value="Employee Name: " />
+    <h:inputText id="employeeName"
+                 value="#{employeeBean.selectedEmployee.employeeName}" />
+    <br/>
+    <h:message for="employeeName" style="color: red;" />
+
+    <br/><br/>
+    <!-- Employee Age -->
+    <h:outputLabel for="employeeAge" value="Age: " />
+    <h:inputText id="employeeAge"
+                 value="#{employeeBean.selectedEmployee.employeeAge}">
+      <f:convertNumber integerOnly="true" />
+      <f:validateLongRange minimum="18" maximum="100"
+                           validatorMessage="Tuổi phải từ 18 đến 100!" />
+    </h:inputText>
+    <br/>
+    <h:message for="employeeAge" style="color: red;" />
+    <br/><br/>
+    <!-- Date of Birth -->
+    <h:outputLabel for="dateOfBirth" value="Date of Birth (dd/MM/yyyy): " />
+    <h:inputText id="dateOfBirth"
+                 value="#{employeeBean.selectedEmployee.dateOfBirth}">
+      <f:convertDateTime pattern="dd/MM/yyyy"
+                         converterMessage="Ngày sinh không đúng định dạng! (dd/MM/yyyy)" />
+    </h:inputText>
+    <br/>
+    <h:message for="dateOfBirth" style="color: red;" />
+
+    <br/><br/>
+
+    <!-- Submit Button -->
+    <h:commandButton value="Save" action="#{employeeBean.update}" />
+
+   
+  </h:form>
+</body>
+</html>

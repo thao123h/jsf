@@ -19,18 +19,18 @@ public class EmployeeBean {
         return employees;
     }
     public String delete() {
-    	if(dao.employeeExists(selectedEmployee.getEmployeeCode(), null)) {
+    	if (dao.findEmployee(selectedEmployee.getEmployeeCode(), null)==null) {
     		message = "Employee doesn't exsist!";
     	}
        
-       if( dao.delete(selectedEmployee.getEmployeeCode())) {
+    	else if( dao.delete(selectedEmployee.getEmployeeCode())) {
     	   message = " Delete employee successfully";   
        }
        else message = "Fail to delete employee";
        return "employeeList.xhtml?faces-redirect=true";
     }
     public String add() {
-    	if (dao.employeeExists(null, selectedEmployee.getEmployeeName())) {
+    	if (dao.findEmployee(null, selectedEmployee.getEmployeeName())!=null) {
     		message = "An employee with this name already exists!";
     		 return "employeeList.xhtml";
     	}
@@ -45,11 +45,23 @@ public class EmployeeBean {
     public String goToUpdatePage() { 	
    	 return "updateEmployee.xhtml";   
     }
-//    public String update() {
-//    	if
-//     }
-   
+    public String update() {
+        Employee existing = dao.findEmployee(null, selectedEmployee.getEmployeeName());
 
+        if (existing != null && 
+            !selectedEmployee.getEmployeeCode().equalsIgnoreCase(existing.getEmployeeCode())) {
+            message = "An employee with this name already exists!";
+        } 
+        else if (dao.update(selectedEmployee)) {
+            message = "Update employee successfully";
+            return "employeeList.xhtml?faces-redirect=true";
+        } 
+        else {
+            message = "Fail to update employee";
+        }
+
+        return "updateEmployee.xhtml";
+    }
 
 
 
