@@ -1,0 +1,42 @@
+package project;
+
+import javax.inject.Named;
+import javax.enterprise.context.RequestScoped;
+import java.util.List;
+
+@Named
+@RequestScoped
+public class EmployeeBean {
+    private List<Employee> employees;
+    private Employee selectedEmployee;
+  private   EmployeeDao dao = new EmployeeDao();
+  private String message;
+    public List<Employee> getEmployees() {
+      
+        employees = dao.getEmployees();
+        return employees;
+    }
+    public String delete() {
+       
+       if( dao.delete(selectedEmployee.getEmployeeCode())) {
+    	   message = " Delete successfully";   
+       }
+       else message = "Fail to delete";
+       return "employeeList.xhtml?faces-redirect=true";
+    }
+
+
+	public Employee getSelectedEmployee() {
+		return selectedEmployee;
+	}
+
+	public void setSelectedEmployee(Employee selectedEmployee) {
+		this.selectedEmployee = selectedEmployee;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+}

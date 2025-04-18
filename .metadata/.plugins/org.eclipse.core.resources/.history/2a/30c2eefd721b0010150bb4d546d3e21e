@@ -1,0 +1,35 @@
+package project;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EmployeeDao {
+    private static final String URL = "jdbc:postgresql://localhost:5432/jsf_demo";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "Taskhub1";
+
+    public List<Employee> getEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        String query = "SELECT * FROM employee";
+
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Employee employee = new Employee();
+                employee.setEmployeeCode(rs.getString("employee_code"));
+                employee.setEmployeeName(rs.getString("employee_name"));
+                employee.setEmployeeAge(rs.getInt("employee_age"));
+                employee.setDateOfBirth(rs.getDate("date_of_birth"));
+                employees.add(employee);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return employees;
+    }
+}
