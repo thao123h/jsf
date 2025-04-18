@@ -15,45 +15,52 @@
   <core validator-id="batch-verification"/>
   <core validator-id="jboss.jsf.core"/>
   <el>
-   <linked-el length="35" name="%2" offset="2380" path="%3"/>
-   <linked-el length="64" name="%0" offset="1007" path="%3"/>
-   <linked-el length="35" name="%0" offset="3119" path="%3"/>
-   <linked-el length="28" name="%0" offset="2256" path="%3"/>
-   <linked-el length="26" name="%0" offset="2131" path="%3"/>
-   <linked-el length="22" name="%0" offset="2036" path="%3"/>
-   <linked-el length="24" name="%0" offset="3047" path="%3"/>
-   <linked-el length="64" name="%0" offset="1579" path="%3"/>
+   <linked-el length="32" name="%2" offset="3310" path="%3"/>
+   <linked-el length="35" name="%4" offset="2377" path="%3"/>
+   <linked-el length="26" name="%0" offset="2128" path="%3"/>
+   <linked-el length="22" name="%0" offset="2033" path="%3"/>
+   <linked-el length="24" name="%0" offset="3109" path="%3"/>
+   <linked-el length="64" name="%0" offset="1576" path="%3"/>
+   <linked-el length="28" name="%0" offset="2253" path="%3"/>
+   <linked-el length="35" name="%0" offset="3181" path="%3"/>
    <linked-el length="65" name="%0" offset="638" path="%3"/>
-   <linked-el length="64" name="%4" offset="1007" path="%3"/>
-   <linked-el length="40" name="%4" offset="2642" path="%3"/>
-   <linked-el length="39" name="%4" offset="2886" path="%3"/>
-   <linked-el length="40" name="%4" offset="2519" path="%3"/>
-   <linked-el length="64" name="%4" offset="1579" path="%3"/>
-   <linked-el length="39" name="%4" offset="2764" path="%3"/>
-   <linked-el length="65" name="%4" offset="638" path="%3"/>
-   <linked-el length="39" name="%1" offset="2886" path="%3"/>
-   <linked-el length="24" name="%1" offset="3047" path="%3"/>
-   <linked-el length="64" name="%1" offset="1579" path="%3"/>
-   <linked-el length="39" name="%1" offset="2764" path="%3"/>
-   <linked-el length="64" name="%1" offset="1007" path="%3"/>
-   <linked-el length="35" name="%1" offset="3119" path="%3"/>
-   <linked-el length="28" name="%1" offset="2256" path="%3"/>
-   <linked-el length="40" name="%1" offset="2642" path="%3"/>
-   <linked-el length="26" name="%1" offset="2131" path="%3"/>
-   <linked-el length="22" name="%1" offset="2036" path="%3"/>
-   <linked-el length="40" name="%1" offset="2519" path="%3"/>
-   <linked-el length="14" name="%1" offset="3160" path="%3"/>
+   <linked-el length="64" name="%0" offset="1006" path="%3"/>
+   <linked-el length="32" name="%0" offset="3310" path="%3"/>
+   <linked-el length="35" name="%0" offset="3390" path="%3"/>
+   <linked-el length="40" name="%5" offset="2704" path="%3"/>
+   <linked-el length="39" name="%5" offset="2948" path="%3"/>
+   <linked-el length="27" name="%5" offset="2567" path="%3"/>
+   <linked-el length="64" name="%5" offset="1576" path="%3"/>
+   <linked-el length="39" name="%5" offset="2826" path="%3"/>
+   <linked-el length="65" name="%5" offset="638" path="%3"/>
+   <linked-el length="64" name="%5" offset="1006" path="%3"/>
+   <linked-el length="39" name="%1" offset="2948" path="%3"/>
+   <linked-el length="24" name="%1" offset="3109" path="%3"/>
+   <linked-el length="27" name="%1" offset="2567" path="%3"/>
+   <linked-el length="14" name="%1" offset="3431" path="%3"/>
+   <linked-el length="64" name="%1" offset="1576" path="%3"/>
+   <linked-el length="39" name="%1" offset="2826" path="%3"/>
+   <linked-el length="28" name="%1" offset="2253" path="%3"/>
+   <linked-el length="35" name="%1" offset="3181" path="%3"/>
+   <linked-el length="64" name="%1" offset="1006" path="%3"/>
+   <linked-el length="32" name="%1" offset="3310" path="%3"/>
+   <linked-el length="26" name="%1" offset="2128" path="%3"/>
+   <linked-el length="40" name="%1" offset="2704" path="%3"/>
+   <linked-el length="22" name="%1" offset="2033" path="%3"/>
+   <linked-el length="14" name="%1" offset="3222" path="%3"/>
    <linked-el length="65" name="%1" offset="638" path="%3"/>
-   <linked-el length="35" name="%5" offset="2380" path="%3"/>
+   <linked-el length="35" name="%1" offset="3390" path="%3"/>
+   <linked-el length="35" name="%6" offset="2377" path="%3"/>
   </el>
  </validation>
  <aliases>
-  <alias path="status.index" value="%2"/>
+  <alias path="employeeBean.gotoUpdatePage" value="%2"/>
+  <alias path="status.index" value="%4"/>
   <alias path="/project/src/main/webapp/employeeList.xhtml" value="%3"/>
   <alias path="/project/src/main/java/project/EmployeeBean.java" value="%0"/>
-  <alias path="/project/src/main/java/project/Employee.java" value="%4"/>
+  <alias path="/project/src/main/java/project/Employee.java" value="%5"/>
   <alias path="employeeBean" value="%1"/>
-  <alias path="status" value="%5"/>
+  <alias path="status" value="%6"/>
  </aliases>
  <includes/>
  <uris>

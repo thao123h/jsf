@@ -73,11 +73,10 @@
         <f:facet name="header">STT</f:facet>
         #{status.index + 1}
       </h:column>
-    
-
-  <h:outputText value="#{employee.employeeCode}" style="display: none;" />
-
-
+      <h:column style="display:none">
+        <f:facet name="header">Employee Code</f:facet>
+        #{employee.employeeCode}
+      </h:column>
       <h:column>
         <f:facet name="header">Employee Name</f:facet>
         #{employee.employeeName}
