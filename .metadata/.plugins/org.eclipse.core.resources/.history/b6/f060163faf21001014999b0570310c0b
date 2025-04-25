@@ -1,0 +1,26 @@
+package project.converter;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+
+public class AgeConverter implements Converter<String>{
+
+	@Override
+	public String getAsObject(FacesContext context, UIComponent component, String value) {
+		  
+		  try {
+	            return Integer.valueOf(value);  // Ví dụ chuyển đổi String sang Integer
+	        } catch (NumberFormatException e) {
+	            // Xử lý lỗi nếu giá trị không hợp lệ
+	            return null;
+	        }
+	}
+
+	@Override
+	public String getAsString(FacesContext context, UIComponent component, String value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,34 @@
+package project.validator;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.FacesValidator;
+import javax.faces.validator.Validator;
+import javax.faces.validator.ValidatorException;
+@FacesValidator("ageValidator")
+public class AgeValidator implements Validator<String> {
+
+    @Override
+    public void validate(FacesContext context, UIComponent component, String value) throws ValidatorException {
+        FacesMessage msg = new FacesMessage();
+        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+        if (value == null || value.trim().isEmpty()) {
+            msg.setSummary("Age cannot be empty!");
+            throw new ValidatorException(msg);
+        }
+
+        String valueString = value.trim();
+        try {
+            int age = Integer.parseInt(valueString);
+            if (age < 18 || age > 100) {
+                msg.setSummary("Age must be between 18 and 100!");
+                throw new ValidatorException(msg);
+            }
+        } catch (Exception e) {
+            msg.setSummary("Age cannot be letters!");
+            throw new ValidatorException(msg);
+        }
+    }
+}
