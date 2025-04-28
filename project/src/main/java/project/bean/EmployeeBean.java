@@ -6,7 +6,7 @@ import project.dao.EmployeeDao;
 import project.model.Employee;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
+
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +18,10 @@ public class EmployeeBean implements Serializable {
 	/**
 	 * 
 	 */
+	private boolean showForm = false;
+	private boolean showTable= true;
+	
+
 	private static final long serialVersionUID = 1L;
 	private List<Employee> employees;
 	private Employee selectedEmployee = new Employee();
@@ -31,6 +35,11 @@ public class EmployeeBean implements Serializable {
 		return employees;
 	}
 
+
+	public void toggleForm() {
+	    showForm = !showForm;
+	    showTable = !showTable;
+	}
 	public String delete() {
 		if (dao.findEmployee(selectedEmployee.getEmployeeCode(), null) == null) {
 			message = "Employee doesn't exsist!";
@@ -50,6 +59,7 @@ public class EmployeeBean implements Serializable {
 		if (selectedEmployee != null && dao.add(selectedEmployee)) {
 			message = " Add employee successfully!";
 			employees = dao.getEmployees();
+			toggleForm();
 		} else
 			message = " Fail to add employee!";
 		return "employeeList.xhtml";
@@ -87,5 +97,20 @@ public class EmployeeBean implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public boolean isShowForm() {
+		return showForm;
+	}
+
+	public void setShowForm(boolean showForm) {
+		this.showForm = showForm;
+	}
+
+	public boolean isShowTable() {
+		return showTable;
+	}
+
+	public void setShowTable(boolean showTable) {
+		this.showTable = showTable;
 	}
 }

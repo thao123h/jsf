@@ -14,12 +14,12 @@ public class AgeValidator implements Validator<Integer> {
         FacesMessage msg = new FacesMessage();
         msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 
-        if (value == null ) {
-            msg.setSummary("Age cannot be empty!");
+        if (value == null || value == 0 ) {
+            msg.setSummary("Age cannot be 0!");
             throw new ValidatorException(msg);
         }
      
-            if (value< 18 || value> 100) {
+           if (value< 18 || value> 100) {
                 msg.setSummary("Age must be between 18 and 100!");
                 throw new ValidatorException(msg);    
     }

@@ -17,7 +17,18 @@ table, th, td {
 </head>
 
 <body>
-	<h:form>
+	
+<h:form rendered="#{!employeeBean.showForm}">
+
+
+    <h:commandButton value="Add Employee"
+        action="#{employeeBean.toggleForm()}">
+        <f:ajax event="click" render="addEmployeeForm employeeTable addButtonForm" execute="@this" />
+    </h:commandButton>
+</h:form>
+
+
+	<h:form id="addEmployeeForm" rendered="#{employeeBean.showForm}">
 		<h3>Add Employee</h3>
 		<!-- Employee Name -->
 		<h:outputLabel for="employeeName" value="Employee Name: " />
@@ -32,32 +43,34 @@ table, th, td {
 		<!-- Employee Age -->
 		<h:outputLabel for="employeeAge" value="Age: " />
 		<h:inputText id="employeeAge"
-			value="#{employeeBean.selectedEmployee.employeeAge}">
+			value="#{employeeBean.selectedEmployee.employeeAge}"
+			converter="ageConverter">
 			<f:validator validatorId="ageValidator" />
 		</h:inputText>
 		<br />
-		<h:message for="employeeAge"/>
+		<h:message for="employeeAge" />
 		<br />
 		<br />
 		<!-- Date of Birth -->
 		<h:outputLabel for="dateOfBirth" value="Date of Birth (dd/MM/yyyy): " />
 		<h:inputText id="dateOfBirth"
-			value="#{employeeBean.selectedEmployee.dateOfBirth}" converter="dateConverter">
+			value="#{employeeBean.selectedEmployee.dateOfBirth}"
+			converter="dateConverter">
 			<f:validator validatorId="dateValidator" />
 		</h:inputText>
 		<br />
-		<h:message for="dateOfBirth" style="color: red;" />
+		<h:message for="dateOfBirth" />
 		<br />
 		<br />
 		<!-- Submit Button -->
-		<h:commandButton value="Add Employee" action="#{employeeBean.add}" />
+		<h:commandButton value="Add " action="#{employeeBean.add}" />
 		<br />
 		<br />
 		<!-- Success Message -->
 		<h:outputText value="#{employeeBean.message}" style="color: green;" />
 	</h:form>
 
-	<h:form>
+	<h:form id="employeeTable" rendered="#{employeeBean.showTable}">
 		<h3>Employee List</h3>
 		<h:dataTable value="#{employeeBean.employees}" var="employee">
 			<h:column>
@@ -96,6 +109,7 @@ table, th, td {
 			</h:column>
 		</h:dataTable>
 	</h:form>
+
 
 </body>
 </html>

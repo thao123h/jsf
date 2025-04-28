@@ -7,7 +7,9 @@ import java.util.Date;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
+import javax.faces.validator.ValidatorException;
 import javax.faces.application.FacesMessage;
 
 @FacesConverter("dateConverter")
@@ -18,22 +20,21 @@ public class DateConverter implements Converter<Date> {
 
     @Override
     public Date getAsObject(FacesContext context, UIComponent component, String value) {
-        if (value == null || value.trim().isEmpty()) {
-            return null;  // có thể xử lý theo yêu cầu
-        }
+    	 if (value == null || value.trim().isEmpty()) {
+    	        return null;
+    	    }
         try {
             return dateFormat.parse(value);
         } catch (ParseException e) {
-            FacesMessage message = new FacesMessage("Invalid date format. Expected format: dd/MM/yyyy");
-            context.addMessage(component.getClientId(context), message);
-            return null;
+            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                "Invalid date format. Expected format: dd/MM/yyyy", null));
         }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Date value) {
         if (value == null) {
-            return null;  // hoặc "" tùy theo yêu cầu
+            return null;
         }
         return dateFormat.format(value);
     }
