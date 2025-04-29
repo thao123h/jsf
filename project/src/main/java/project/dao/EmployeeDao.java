@@ -24,7 +24,7 @@ public class EmployeeDao {
 				employee.setEmployeeCode(rs.getString("employee_code"));
 				employee.setEmployeeName(rs.getString("employee_name"));
 				employee.setEmployeeAge(rs.getInt("employee_age"));
-				employee.setDateOfBirth(rs.getDate("date_of_birth"));
+				employee.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 				employees.add(employee);
 			}
 
@@ -59,7 +59,7 @@ public class EmployeeDao {
 					emp.setEmployeeCode(rs.getString("employee_code"));
 					emp.setEmployeeName(rs.getString("employee_name"));
 					emp.setEmployeeAge(rs.getInt("employee_age"));
-					emp.setDateOfBirth(rs.getDate("date_of_birth"));
+					emp.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
 					return emp;
 				}
 			}
@@ -89,12 +89,10 @@ public class EmployeeDao {
 				+ "VALUES (?, ?, ?, ?)";
 		try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
 				PreparedStatement stmt = conn.prepareStatement(query)) {
-
 			stmt.setString(1, employee.getEmployeeCode());
 			stmt.setString(2, employee.getEmployeeName());
 			stmt.setInt(3, employee.getEmployeeAge());
-			stmt.setDate(4, new java.sql.Date(employee.getDateOfBirth().getTime())); // Chuyển từ java.util.Date sang
-																						// java.sql.Date
+			stmt.setDate(4, java.sql.Date.valueOf(employee.getDateOfBirth()));
 			int rowsAffected = stmt.executeUpdate();
 			return rowsAffected > 0; // true nếu thêm thành công
 
@@ -114,9 +112,8 @@ public class EmployeeDao {
 
 			stmt.setString(1, employee.getEmployeeName());
 			stmt.setInt(2, employee.getEmployeeAge());
-			stmt.setDate(3, new java.sql.Date(employee.getDateOfBirth().getTime()));
+			stmt.setDate(4, java.sql.Date.valueOf(employee.getDateOfBirth()));
 			stmt.setString(4, employee.getEmployeeCode());
-
 			int rowsAffected = stmt.executeUpdate();
 			return rowsAffected > 0; // true nếu cập nhật thành công
 

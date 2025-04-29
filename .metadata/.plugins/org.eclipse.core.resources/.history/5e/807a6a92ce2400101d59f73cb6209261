@@ -1,0 +1,118 @@
+package project.bean;
+
+import javax.inject.Named;
+
+import project.dao.EmployeeDao;
+import project.model.Employee;
+
+
+
+
+
+import javax.enterprise.context.SessionScoped;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.UUID;
+
+@Named
+@SessionScoped
+public class EmployeeBean implements Serializable {
+	/**
+	 * 
+	 */
+	private boolean showForm = false;
+	private boolean showTable = true;
+
+
+	private static final long serialVersionUID = 1L;
+	private List<Employee> employees;
+	private Employee selectedEmployee = new Employee();
+	private EmployeeDao dao = new EmployeeDao();
+	private String message;
+
+	
+
+	public List<Employee> getEmployees() {
+		if (employees == null) {
+			employees = dao.getEmployees();
+		}
+		return employees;
+	}
+
+
+	public void toggleForm() {
+	    this.showForm = !this.showForm;
+	   
+	    
+	}
+	public void delete() {
+		if (dao.findEmployee(selectedEmployee.getEmployeeCode(), null) == null) {
+			message = "Employee doesn't exsist!";
+		} else if (dao.delete(selectedEmployee.getEmployeeCode())) {
+			employees = dao.getEmployees();
+			message = " Delete employee successfully";
+			
+		} else
+			message = "Fail to delete employee";
+	
+	}
+
+	public void add() {
+	
+		selectedEmployee.setEmployeeCode(UUID.randomUUID().toString().substring(0, 8));
+		if (selectedEmployee != null && dao.add(selectedEmployee)) {
+			message = " Add employee successfully!";
+			employees = dao.getEmployees();
+			toggleForm();
+		} else
+			message = " Fail to add employee!";
+		
+	}
+
+
+	public void update() {
+		Employee existing = dao.findEmployee(null, selectedEmployee.getEmployeeName());
+
+		if (existing != null && !selectedEmployee.getEmployeeCode().equalsIgnoreCase(existing.getEmployeeCode())) {
+			message = "An employee with this name already exists!";
+		} else if (dao.update(selectedEmployee)) {
+			employees = dao.getEmployees();
+			toggleForm();
+		} else {
+			message = "Fail to update employee";
+		}
+
+	}
+
+	public Employee getSelectedEmployee() {
+		return selectedEmployee;
+	}
+
+	public void setSelectedEmployee(Employee selectedEmployee) {
+		this.selectedEmployee = selectedEmployee;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public boolean isShowForm() {
+		return showForm;
+	}
+
+	public void setShowForm(boolean showForm) {
+		this.showForm = showForm;
+	}
+
+	public boolean isShowTable() {
+		return showTable;
+	}
+
+	public void setShowTable(boolean showTable) {
+		this.showTable = showTable;
+	}
+}

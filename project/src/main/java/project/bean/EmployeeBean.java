@@ -5,23 +5,25 @@ import javax.inject.Named;
 import project.dao.EmployeeDao;
 import project.model.Employee;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 
+import javax.faces.validator.ValidatorException;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
+
 import java.util.List;
 import java.util.UUID;
 
 @Named
-@RequestScoped
+@SessionScoped
 public class EmployeeBean implements Serializable {
-	/**
-	 * 
-	 */
-	private boolean showForm = false;
-	private boolean showTable= true;
-	
 
+	private boolean showForm = false;
 	private static final long serialVersionUID = 1L;
 	private List<Employee> employees;
 	private Employee selectedEmployee = new Employee();
@@ -35,53 +37,96 @@ public class EmployeeBean implements Serializable {
 		return employees;
 	}
 
-
 	public void toggleForm() {
-	    showForm = !showForm;
-	    showTable = !showTable;
+		this.showForm = !this.showForm;
+
 	}
-	public String delete() {
+
+	public void delete() {
 		if (dao.findEmployee(selectedEmployee.getEmployeeCode(), null) == null) {
 			message = "Employee doesn't exsist!";
 		} else if (dao.delete(selectedEmployee.getEmployeeCode())) {
+			employees = dao.getEmployees();
 			message = " Delete employee successfully";
+
 		} else
 			message = "Fail to delete employee";
-		return "employeeList.xhtml?faces-redirect=true";
+
 	}
 
-	public String add() {
-		if (dao.findEmployee(null, selectedEmployee.getEmployeeName()) != null) {
-			message = "An employee with this name already exists!";
-			return "employeeList.xhtml";
-		}
+	public void add() {
 		selectedEmployee.setEmployeeCode(UUID.randomUUID().toString().substring(0, 8));
+		 if (selectedEmployee.getDateOfBirth() != null) {
+			   LocalDate today = LocalDate.now();
+		        LocalDate birthDate = selectedEmployee.getDateOfBirth();  
+		        Period period = Period.between(birthDate, today);
+		        int age = period.getYears();  
+		        selectedEmployee.setEmployeeAge(age);	 
+		 }
+		       
 		if (selectedEmployee != null && dao.add(selectedEmployee)) {
-			message = " Add employee successfully!";
 			employees = dao.getEmployees();
 			toggleForm();
-		} else
-			message = " Fail to add employee!";
-		return "employeeList.xhtml";
+			selectedEmployee = new Employee();
+		}
 	}
 
-	public String goToUpdatePage() {
-		return "updateEmployee.xhtml";
-	}
-
-	public String update() {
+	public void update() {
 		Employee existing = dao.findEmployee(null, selectedEmployee.getEmployeeName());
 
 		if (existing != null && !selectedEmployee.getEmployeeCode().equalsIgnoreCase(existing.getEmployeeCode())) {
 			message = "An employee with this name already exists!";
 		} else if (dao.update(selectedEmployee)) {
-			return "employeeList.xhtml?faces-redirect=true";
+			employees = dao.getEmployees();
+			toggleForm();
 		} else {
 			message = "Fail to update employee";
 		}
 
-		return "updateEmployee.xhtml";
 	}
+
+	// Validate
+	public void validateName(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+		if (value == null) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Name cannot be empty!", null));
+		}
+		String valueString = value.toString();
+		if (valueString.length() < 2 || valueString.length() > 50) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"The name must be between 2 and 50 characters!", null));
+		}
+		if (!valueString.matches("^[\\p{L}\\s'.-]+$")) {
+			throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"The name cannot contain number or special characters other than apostrophes, periods, and hyphens.",
+					null));
+		}
+
+	}
+
+	public void validateDate(FacesContext context, UIComponent component, LocalDate value) throws ValidatorException {
+	    if (value == null) {
+	        throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Date cannot be empty!", null));
+	    }
+
+	    LocalDate today = LocalDate.now();
+	    
+	    if (!value.isBefore(today)) {
+	        throw new ValidatorException(
+	                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Date must be before today.", null));
+	    }
+
+	    int age = Period.between(value, today).getYears();
+	 
+	    if (age < 18) {
+	        throw new ValidatorException(
+	                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Age must be at least 18.", null));
+	    }
+	    if (age > 100) {
+	        throw new ValidatorException(
+	                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Age must be less than 100.", null));
+	    }
+	}
+
 
 	public Employee getSelectedEmployee() {
 		return selectedEmployee;
@@ -98,6 +143,7 @@ public class EmployeeBean implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
 	public boolean isShowForm() {
 		return showForm;
 	}
@@ -106,11 +152,4 @@ public class EmployeeBean implements Serializable {
 		this.showForm = showForm;
 	}
 
-	public boolean isShowTable() {
-		return showTable;
-	}
-
-	public void setShowTable(boolean showTable) {
-		this.showTable = showTable;
-	}
 }

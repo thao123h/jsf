@@ -1,41 +1,46 @@
 package project.converter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
-import javax.faces.validator.ValidatorException;
+
 import javax.faces.application.FacesMessage;
 
 @FacesConverter("dateConverter")
-public class DateConverter implements Converter<Date> {
+public class DateConverter implements Converter<LocalDate> {
 
-    private static final String DATE_PATTERN = "dd/MM/yyyy";
-    private SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+	private static final DateTimeFormatter[] SUPPORTED_FORMATS = new DateTimeFormatter[] {
+		    DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+		    DateTimeFormatter.ofPattern("MM-dd-yyyy"),
+		    DateTimeFormatter.ofPattern("yyyy/MM/dd"),
+		    DateTimeFormatter.ofPattern("yyyy-MM-dd")
+		};
+
+	@Override
+	public LocalDate getAsObject(FacesContext context, UIComponent component, String value) {
+	    if (value == null || value.trim().isEmpty()) return null;
+
+	    for (DateTimeFormatter formatter : SUPPORTED_FORMATS) {
+	        try {
+	        	 value = value.trim().replaceAll("\\b(\\d)\\b", "0$1");
+	            return LocalDate.parse(value, formatter); 
+	        } catch (DateTimeParseException e) {        	  
+	            
+	        }
+	    }
+
+	    throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+   	            "Invalid date", null));
+	}
 
     @Override
-    public Date getAsObject(FacesContext context, UIComponent component, String value) {
-    	 if (value == null || value.trim().isEmpty()) {
-    	        return null;
-    	    }
-        try {
-            return dateFormat.parse(value);
-        } catch (ParseException e) {
-            throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
-                "Invalid date format. Expected format: dd/MM/yyyy", null));
-        }
-    }
-
-    @Override
-    public String getAsString(FacesContext context, UIComponent component, Date value) {
-        if (value == null) {
-            return null;
-        }
-        return dateFormat.format(value);
+    public String getAsString(FacesContext context, UIComponent component, LocalDate value) {
+    	return value != null ?  SUPPORTED_FORMATS[0].format(value) : "";
     }
 }

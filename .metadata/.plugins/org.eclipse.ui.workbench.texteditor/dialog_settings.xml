@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="deployment"/>
+		<item key="selection" value="out"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="out"/>
+			<item value="message"/>
+			<item value="update"/>
+			<item value="&lt;h:form id=&quot;addEmployeeForm&quot; rendered=&quot;#{employeeBean.showForm}&quot;&gt;"/>
 			<item value="project-0.0.1"/>
 			<item value="deployment"/>
 		</list>

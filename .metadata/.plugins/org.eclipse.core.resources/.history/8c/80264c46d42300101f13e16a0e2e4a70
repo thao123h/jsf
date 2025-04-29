@@ -1,0 +1,36 @@
+package project.converter;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
+import javax.faces.validator.ValidatorException;
+
+public class AgeConverter implements Converter<Integer> {
+
+	
+
+	@Override
+	public Integer getAsObject(FacesContext context, UIComponent component, String value) {
+	if (value.isEmpty()) {
+		 throw new ValidatorException(new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                 "Age cannot empty", null));
+	}
+	try {
+		 return Integer.parseInt(value);  
+	} catch (Exception e) {
+		  throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+	                "Age must be a valid number", null));
+	}
+	}
+
+	@Override
+	public String getAsString(FacesContext context, UIComponent component, Integer value) {
+		 if (value == null) {
+	            return ""; // Trả về chuỗi rỗng nếu giá trị là null
+	        }
+	        return value.toString(); // Chuyển đối tượng Integer thành chuỗi
+	}
+
+}

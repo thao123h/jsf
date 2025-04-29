@@ -1,17 +1,18 @@
 package project.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Employee {
     private String employeeCode;
     private String employeeName;
     private int employeeAge;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
   
 	public Employee() {
 		super();
 	}
-	public Employee(String employeeCode, String employeeName, int employeeAge, Date dateOfBirth) {
+	public Employee(String employeeCode, String employeeName, int employeeAge, LocalDate dateOfBirth) {
 		super();
 		this.employeeCode = employeeCode;
 		this.employeeName = employeeName;
@@ -36,10 +37,10 @@ public class Employee {
 	public void setEmployeeAge(int employeeAge) {
 		this.employeeAge = employeeAge;
 	}
-	public Date getDateOfBirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
-	public void setDateOfBirth(Date dateOfBirth) {
+	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
 
